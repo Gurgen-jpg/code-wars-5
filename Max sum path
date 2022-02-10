@@ -1,0 +1,44 @@
+function maxSumPath(l1, l2) {
+    let maxSum = 0;
+    let sum = 0;
+
+    // проверка массивов
+    if ((l1.length == 0) && (l2.length != 0)) { return maxSum = l2.reduce((a, b) => a + b) }
+    else if ((l1.length != 0) && (l2.length == 0)) { return maxSum = l1.reduce((a, b) => a + b) }
+    else if ((l1.length == 0) && (l2.length == 0)) { return 0 } else {
+
+        sum = l1.reduce((a, b) => a + b);
+        maxSum = l2.reduce((a, b) => a + b);
+        if (sum > maxSum) { maxSum = sum };
+
+        //тут поиск индксов пересечения
+        let id1 = [];
+        let id2 = [];
+
+        for (let i = 0; i < l2.length; i++) {
+            id1.push(l1.indexOf(l2[i]))
+        }
+        for (let i = 0; i < l1.length; i++) {
+            id2.push(l2.indexOf(l1[i]))
+        }
+        //оставить только точки пересечения
+        id1 = id1.filter((el) => el >= 0);
+        id2 = id2.filter((el) => el >= 0);
+        // цикл новых масссивов(путей)
+        let newRoad = [];
+        for (let i = 0; i < id1.length; i++) {
+
+            newRoad = l1.slice(0, id1[i]).concat(l2.slice(id2[i]))
+            sum = newRoad.reduce((a, b) => a + b);
+            if (sum > maxSum) { maxSum = sum }
+        }
+        for (let i = 0; i < id1.length; i++) {
+
+            newRoad = l2.slice(0, id2[i]).concat(l1.slice(id1[i]))
+            sum = newRoad.reduce((a, b) => a + b);
+            if (sum > maxSum) { maxSum = sum }
+        }
+        return maxSum
+        // Your code here
+    }
+}
